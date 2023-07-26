@@ -4,7 +4,7 @@
 
 주의 사항
 링크 따라서 실행하면 터미널에서 import에러 코드 많이 뜰껀데 정상.  
+Figma template제작할때 문법 잘지켜야 함.
+![스크린샷 2023-07-26 오후 4 15 43](https://github.com/Logy-CTO/Logy_dev_test/assets/74459097/a51a7c42-cdf9-4729-af17-8e79b18f9999)
 
-python3 -m pip install jinja2
-python3 -m pip install Pillow
 
