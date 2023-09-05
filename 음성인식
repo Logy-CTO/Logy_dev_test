@@ -1,0 +1,68 @@
+import tkinter as tk
+from tkinter import Button
+from PIL import Image, ImageTk
+import speech_recognition as sr
+import threading
+
+class SpeechRecognitionApp:
+    def __init__(self):
+        self.is_listening = False  # 음성 인식 상태 변수
+
+        self.window = tk.Tk()
+
+        # 이미지 열기
+        speech_button_image = Image.open("/Users/hongtaegsu/Downloads/logy_Dev-main (2)/logy_Dev-main/assets/frame0/speech_button.png")
+
+        # PIL Image를 Tkinter PhotoImage로 변환
+        self.speech_button_image_tk = ImageTk.PhotoImage(speech_button_image)
+
+        self.speech_button = Button(
+            image=self.speech_button_image_tk,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.on_speech_button_click,
+        )
+
+        self.speech_button.place(x=0, y=0)  # 적절한 위치로 변경해주세요.
+
+    def start_listening(self):
+        # 오디오 입력 설정하기 (마이크로 입력)
+        r = sr.Recognizer()
+        
+        while self.is_listening:
+            with sr.Microphone() as source:
+                print("말씀하세요:")
+                audio = r.listen(source)
+
+            try:
+                # 오디오에서 음성 인식하기 (구글 웹 API 사용)
+                text = r.recognize_google(audio, language='ko-KR')
+                print("음성 인식 결과:", text)
+            except sr.UnknownValueError:
+                print("음성을 인식하지 못했습니다.")
+            except sr.RequestError as e:
+                print("오류 발생:", str(e))
+
+    def on_speech_button_click(self):
+        if not self.is_listening:  # 현재 리스닝 중이 아닐 때
+            self.is_listening = True
+
+            t = threading.Thread(target=self.start_listening)
+            
+            print("음성인식을 시작합니다.")
+            
+            t.start()
+            
+            # 버튼 이미지 변경 등의 추가 동작 수행
+            
+            
+        else:  # 현재 리스닝 중일 때
+            self.is_listening = False
+
+            print("음성인식을 일시정지합니다.")
+             
+    def run(self):
+         self.window.mainloop()
+
+app = SpeechRecognitionApp()
+app.run()
